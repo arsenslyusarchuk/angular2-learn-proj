@@ -1,45 +1,35 @@
-import {Component} from 'angular2/core';
-import {OnInit} from 'angular2/core';
-import {Hero} from './hero';
-import {HeroDetailComponent} from './hero-detail.component';
-import {HeroService} from './hero.service';
-
+import { Component }       from 'angular2/core';
+import { HeroService }     from './hero.service';
+import { HeroesComponent } from './heroes.component';
+import { DashboardComponent } from './dashboard.component';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 
 @Component({
   selector: 'my-app',
-  directives: [HeroDetailComponent],
-  providers: [HeroService],
-  template:`
+  template: `
     <h1>{{title}}</h1>
-    <h2>My Heroes</h2>
-    <ul class="heroes items">
-      <li *ngFor="#hero of heroes"
-        [class.selected]="hero === selectedHero"
-        (click)="onSelect(hero)">
-        <span class="badge">{{hero.id}}</span> {{hero.name}}
-      </li>
-    </ul>
-    <my-hero-detail [hero]="selectedHero"></my-hero-detail>
-  `
+    <nav>
+      <a [routerLink]="['Dashboard']">Dashboard</a>
+      <a [routerLink]="['Heroes']">Heroes</a>
+    </nav>
+    <router-outlet></router-outlet>
+  `,
+  directives: [ROUTER_DIRECTIVES],
+  providers: [HeroService, ROUTER_PROVIDERS]
 })
-export class AppComponent implements OnInit {
+@RouteConfig([
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: DashboardComponent,
+    useAsDefault: true
+  },
+  {
+    path: '/heroes',
+    name: 'Heroes',
+    component: HeroesComponent
+  }
+])
+export class AppComponent {
   title = 'Tour of Heroes';
-  heroes: Hero[];
-  selectedHero: Hero;
-
-  constructor(private _heroService: HeroService) {
-    // constructor will assign values automatically
-  }
-  ngOnInit() {
-    // this.getHeroes();
-    this.getHeroesSlowly();
-  }
-  getHeroes() {
-    this._heroService.getHeroes().then(heroes => this.heroes = heroes);
-  }
-  //2 sec delay
-  getHeroesSlowly() {
-    this._heroService.getHeroesSlowly().then(heroes => this.heroes = heroes);
-  }
-  onSelect(hero: Hero) { this.selectedHero = hero; }
 }

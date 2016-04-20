@@ -1,4 +1,4 @@
-System.register(['angular2/core', './hero-detail.component', './hero.service'], function(exports_1, context_1) {
+System.register(['angular2/core', './hero.service', './heroes.component', './dashboard.component', 'angular2/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,48 +10,51 @@ System.register(['angular2/core', './hero-detail.component', './hero.service'], 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, hero_detail_component_1, hero_service_1;
+    var core_1, hero_service_1, heroes_component_1, dashboard_component_1, router_1;
     var AppComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (hero_detail_component_1_1) {
-                hero_detail_component_1 = hero_detail_component_1_1;
-            },
             function (hero_service_1_1) {
                 hero_service_1 = hero_service_1_1;
+            },
+            function (heroes_component_1_1) {
+                heroes_component_1 = heroes_component_1_1;
+            },
+            function (dashboard_component_1_1) {
+                dashboard_component_1 = dashboard_component_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent(_heroService) {
-                    this._heroService = _heroService;
+                function AppComponent() {
                     this.title = 'Tour of Heroes';
-                    // constructor will assign values automatically
                 }
-                AppComponent.prototype.ngOnInit = function () {
-                    // this.getHeroes();
-                    this.getHeroesSlowly();
-                };
-                AppComponent.prototype.getHeroes = function () {
-                    var _this = this;
-                    this._heroService.getHeroes().then(function (heroes) { return _this.heroes = heroes; });
-                };
-                //2 sec delay
-                AppComponent.prototype.getHeroesSlowly = function () {
-                    var _this = this;
-                    this._heroService.getHeroesSlowly().then(function (heroes) { return _this.heroes = heroes; });
-                };
-                AppComponent.prototype.onSelect = function (hero) { this.selectedHero = hero; };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
-                        directives: [hero_detail_component_1.HeroDetailComponent],
-                        providers: [hero_service_1.HeroService],
-                        template: "\n    <h1>{{title}}</h1>\n    <h2>My Heroes</h2>\n    <ul class=\"heroes items\">\n      <li *ngFor=\"#hero of heroes\"\n        [class.selected]=\"hero === selectedHero\"\n        (click)=\"onSelect(hero)\">\n        <span class=\"badge\">{{hero.id}}</span> {{hero.name}}\n      </li>\n    </ul>\n    <my-hero-detail [hero]=\"selectedHero\"></my-hero-detail>\n  "
-                    }), 
-                    __metadata('design:paramtypes', [hero_service_1.HeroService])
+                        template: "\n    <h1>{{title}}</h1>\n    <nav>\n      <a [routerLink]=\"['Dashboard']\">Dashboard</a>\n      <a [routerLink]=\"['Heroes']\">Heroes</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
+                        directives: [router_1.ROUTER_DIRECTIVES],
+                        providers: [hero_service_1.HeroService, router_1.ROUTER_PROVIDERS]
+                    }),
+                    router_1.RouteConfig([
+                        {
+                            path: '/dashboard',
+                            name: 'Dashboard',
+                            component: dashboard_component_1.DashboardComponent,
+                            useAsDefault: true
+                        },
+                        {
+                            path: '/heroes',
+                            name: 'Heroes',
+                            component: heroes_component_1.HeroesComponent
+                        }
+                    ]), 
+                    __metadata('design:paramtypes', [])
                 ], AppComponent);
                 return AppComponent;
             }());
