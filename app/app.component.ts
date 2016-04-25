@@ -7,6 +7,7 @@ import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/route
 
 @Component({
   selector: 'my-app',
+  styleUrls: ['app/app.component.css'],
   template: `
     <h1>{{title}}</h1>
     <nav>
